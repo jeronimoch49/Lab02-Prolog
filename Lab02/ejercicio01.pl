@@ -23,23 +23,22 @@ distancia(P1, P2, S):-
     S is sqrt(SX*SX + SY*SY).
 
 % Ver si es posible que la rana haga el salto
-
-siguiente_estado(P1, P2):-
+	siguiente_estado(pos(P1), pos(P2)):-
     distancia(P1, P2, S),
     salto_maximo(Maximo),
     S =< Maximo.
 
 % Busqueda DFS para encontrar el camino correcto
 
-dfs(Posible, Posible, _).
+dfs(pos(Lugar), _, [Lugar]).   % caso base: llegó a la meta
 
-dfs(Actual, Meta, Pasados) :-
-    siguiente_estado(Actual, Siguiente),
-    \+ member(Siguiente, Pasados),
-    dfs(Siguiente, Meta, [Siguiente|Pasados]).
+dfs(pos(Actual), Visitados, [Actual|Solucion]) :-
+    siguiente_estado(pos(Actual), pos(Siguiente)),
+    \+ member(pos(Siguiente), Visitados),
+    dfs(pos(Siguiente), [pos(Siguiente)|Visitados], Solucion).
 
 % Busqueda DFS para encontrar la orilla final desde la inicial
 
-puede_llegar :-
-    dfs(orilla_inicial, orilla_final, [orilla_inicial]).
-    
+buscar_solucion(Solucion) :-
+    EstadoInicial = pos(orilla_inicial),
+    dfs(EstadoInicial, [EstadoInicial], Solucion).
