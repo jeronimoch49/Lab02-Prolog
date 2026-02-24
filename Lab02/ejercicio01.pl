@@ -30,7 +30,7 @@ distancia(P1, P2, S):-
 
 % Busqueda DFS para encontrar el camino correcto
 
-dfs(pos(Lugar), _, [Lugar]).   % caso base: llegó a la meta
+dfs(pos(Lugar), _, [Lugar]).
 
 dfs(pos(Actual), Visitados, [Actual|Solucion]) :-
     siguiente_estado(pos(Actual), pos(Siguiente)),
